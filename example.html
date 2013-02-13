@@ -1,0 +1,48 @@
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="machinad.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+$('#yay').hide();
+$('#aww').hide();
+
+var fromCool = function(a) {
+    return a.target.id === 'cool' ? success($('#yay')) : failure(a);
+};
+
+var fromLame = function(a) {
+    return a.target.id === 'lame' ? success($('#aww')) : failure(a);
+};
+
+var show = function(a) {
+    return a.is(":visible") ? failure(a) : success(a.show());
+};
+
+var hide = function(a) {
+    return a.is(":visible") ? success(a.hide()) : failure(a);
+};
+
+// showing various ways to compose the functions together:
+var lameOrCool = fromLame.or(fromCool);
+var toggleVisible = show.or(hide);
+var toggleLameOrCool = lameOrCool.then(toggleVisible);
+var toggleLame = fromLame.then(show).or(hide); // for when you only want to mess with lame but not cool
+
+// could also just:
+var toggleLameOrCool = fromLame.or(fromCool).then(show).or(hide);
+
+$('#cool').click(toggleLameOrCool);
+$('#lame').click(lameOrCool.then(show.or(hide)));
+});
+
+</script>
+</head>
+<body>
+<input type="button" value="good" id="cool"/>
+<input type="button" value="not so good" id="lame"/>
+<div id="yay">So cool</div>
+<div id="aww">so lame :(</div>
+</body>
+</html>
