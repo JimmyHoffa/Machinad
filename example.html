@@ -30,8 +30,13 @@ var toggleVisible = show.or(hide);
 var toggleLameOrCool = lameOrCool.then(toggleVisible);
 var toggleLame = fromLame.then(show).or(hide); // for when you only want to mess with lame but not cool
 
-// could also just:
-var toggleLameOrCool = fromLame.or(fromCool).then(show).or(hide);
+// Note, or takes the previous function and backtracks it, so:
+//        fromLame.or(fromCool).then(show).or(hide);
+// is: ( fromLame.or(fromCool).then(show) ).or(hide)
+// which means, in the above the initial value handed to the first bits will be handed to the second if the first failed.
+// in other words:
+// lameOrCool.then(show).or(hide); -- this function tries the first two functions and if they fail, will give the original value to hide.
+// lameOrCool.then(show.or(hide)); -- this function will give the value it would have given to show, to hide if show fails.
 
 $('#cool').click(toggleLameOrCool);
 $('#lame').click(lameOrCool.then(show.or(hide)));
