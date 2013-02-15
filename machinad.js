@@ -63,14 +63,7 @@
     /* error monad's monadic actions, and some english verbiage aliases */
     this.m_.until = function(f, p) {
         return function(a) {
-            var result = f(a);
-            var goodResult = result;
-            while(m_.bind(p, result).m === Failure) {
-                if (result.m === Failure) return goodResult;
-                else goodResult = result;
-                result = m_.bind(f, result);
-            }
-            return result;
+            return m_.kleisli(f, m_.alternative(p, m_.until(f, p)))(a); 
         };
     };
 
