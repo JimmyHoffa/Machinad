@@ -1,0 +1,52 @@
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="machinad.js"></script>
+<script type="text/javascript" src="parsad.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+var removeVowels = vowel.then(skip).or(take);
+var onlyVowels = vowel.then(take).or(skip);
+var replaceWithBrs = newLine.then(pushString('<br/>')).then(skip).or(take);
+var removeThe = skipString('the').or(take);
+var replaceString = function(a, b) {
+    return skipString(a).then(pushString(b)).or(take);
+};
+
+var getEventValue = function(a) { return success(a.target.value); };
+var showResult = function(target) {
+    return function(a) {
+        target.html(a.result.join(''));
+        return success(a);
+    };
+};
+
+var handEventToParser = function(p) {
+    return getEventValue.then(makeParseable).then(p.until(endOfParse));
+};
+
+$('#input').keyup(handEventToParser(onlyVowels).then(showResult($('#withVowels'))));
+$('#input').keyup(handEventToParser(removeVowels).then(showResult($('#withoutVowels'))));
+$('#input').keyup(handEventToParser(replaceWithBrs).then(showResult($('#withBrs'))));
+$('#input').keyup(handEventToParser(removeThe).then(showResult($('#removeThe'))));
+$('#input').keyup(handEventToParser(replaceString('is', 'the')).then(showResult($('#isThe'))));
+});
+
+</script>
+</head>
+<body>
+<textarea rows="7" cols="75" id="input">
+</textarea>
+<br/><br/>vowels:
+<div id="withVowels"></div>
+<br/><br/>no vowels:
+<div id="withoutVowels"></div>
+<br/><br/>with newlines fixed to brs:
+<div id="withBrs"></div>
+<br/><br/>remove the
+<div id="removeThe"></div>
+<br/><br/>is = the:
+<div id="isThe"></div>
+</body>
+</html>
