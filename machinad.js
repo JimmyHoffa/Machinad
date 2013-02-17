@@ -88,7 +88,7 @@ var makeMonadWithAlternative = function(m_, bind_, alt_, ret_) {
 
 // create the data type and monad instance
 (function() {
-    var dom = function(){};
+
     var either = function(m, a) {
         this.m = m;
         try { this.a = JSON.parse(JSON.stringify(a)); }
