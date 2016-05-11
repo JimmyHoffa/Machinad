@@ -9,19 +9,19 @@ $('#yay').hide();
 $('#aww').hide();
 
 var fromCool = function(a) {
-    return a.target.id === 'cool' ? success($('#yay')) : failure(a);
+    return a.target.id === 'cool' ? either.success($('#yay')) : either.failure(a);
 };
 
 var fromLame = function(a) {
-    return a.target.id === 'lame' ? success($('#aww')) : failure(a);
+    return a.target.id === 'lame' ? either.success($('#aww')) : either.failure(a);
 };
 
 var show = function(a) {
-    return a.is(":visible") ? failure(a) : success(a.show());
+    return a.is(":visible") ? either.failure(a) : either.success(a.show());
 };
 
 var hide = function(a) {
-    return a.is(":visible") ? success(a.hide()) : failure(a);
+    return a.is(":visible") ? either.success(a.hide()) : either.failure(a);
 };
 
 // showing various ways to compose the functions together:
